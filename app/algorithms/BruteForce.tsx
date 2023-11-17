@@ -2,8 +2,14 @@
 import { useState,useEffect } from "react";
 import Point from "../components/Point";
 import Line from "../components/Line";
+import HighlightPointP from "../components/HighlightPointP";
+import HighlightPointQ from "../components/HighlightPointQ";
 export default function BruteForce(){
 
+  const [isComplete,setIsComplete]=useState(false);
+  const [pointP,setPointP]=useState<{x:number,y:number}>();
+  const [pointQ,setPointQ]=useState<{x:number,y:number}>();
+const [isRunning,setIsRunning]=useState(false);
     const [hull, setHull] = useState([
         {
           x: 0,
@@ -70,13 +76,16 @@ export default function BruteForce(){
     
       useEffect(() => {
         async function bruteForceConvexHull(points:{x:number,y:number}[]) {
+          setIsRunning(true);
           const n = points.length;
           if (n < 3) return points; // Convex hull is not possible with less than 3 points
     
           let hull: any = [];
     
           for (let i = 0; i < n; i++) {
+            setPointP(points[i]);
             for (let j = 0; j < n; j++) {
+              setPointQ(points[j]);
               if (i !== j) {
                 let valid = true;
                 for (let k = 0; k < n; k++) {
@@ -100,22 +109,13 @@ export default function BruteForce(){
                 if (valid) {
                   if (!hull.includes(points[i])) {
                     hull.push(points[i]);
-                    hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
-                      const angleA = Math.atan2(a.y - Math.min(...hull.map((p:{x:number,y:number}) => p.y)), a.x - Math.min(...hull.map((p:{x:number,y:number}) => p.x)));
-                      const angleB = Math.atan2(b.y - Math.min(...hull.map((p:{x:number,y:number}) => p.y)), b.x - Math.min(...hull.map((p:{x:number,y:number}) => p.x)));
-                      return angleA - angleB;
-                    });
+                     
                     
-                    // setHull(hull);
+                     setHull(hull);
                   }
                   if (!hull.includes(points[j])) {
                     hull.push(points[j]);
                     
-                    hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
-                        const angleA = Math.atan2(a.y - Math.min(...hull.map((p:{x:number,y:number}) => p.y)), a.x - Math.min(...hull.map((p:{x:number,y:number}) => p.x)));
-                        const angleB = Math.atan2(b.y - Math.min(...hull.map((p:{x:number,y:number}) => p.y)), b.x - Math.min(...hull.map((p:{x:number,y:number}) => p.x)));
-                        return angleA - angleB;
-                      });
                                        setHull(hull);
                   }
                 }
@@ -123,20 +123,8 @@ export default function BruteForce(){
             }
           }
          
-          
-          hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
-            const angleA = Math.atan2(a.y - Math.min(...hull.map((p:{x:number,y:number}) => p.y)), a.x - Math.min(...hull.map((p:{x:number,y:number}) => p.x)));
-            const angleB = Math.atan2(b.y - Math.min(...hull.map((p:{x:number,y:number}) => p.y)), b.x - Math.min(...hull.map((p:{x:number,y:number}) => p.x)));
-            return angleA - angleB;
-          });
-          setCurrentLine({
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 0,
-            x3: 0,
-            y3: 0
-          });                 
+           setIsRunning(false);
+           setIsComplete(true);                 
 
           setHull(hull);
         }
@@ -145,37 +133,60 @@ export default function BruteForce(){
     
       return (
         <div className="App">
-          <Line
-            x1={currentLine.x1}
-            y1={currentLine.y1}
-            x2={currentLine.x2}
-            y2={currentLine.y2}
-          />
+         {isRunning && (
+    <>
     
-          <Line
-            x1={currentLine.x2}
-            y1={currentLine.y2}
-            x2={currentLine.x3}
-            y2={currentLine.y3}
-          />
-           
-     
-          {hull.length > 2 &&
-            hull.map((p, index) => {
+    <HighlightPointP
+    x={pointP?.x||0}
+    y={pointP?.y||0}
+    />
+    <HighlightPointQ
+    x={pointQ?.x||0}
+    y={pointQ?.y||0}
+    />
+    <Line
+    x1={currentLine.x1}
+    y1={currentLine.y1}
+    x2={currentLine.x2}
+    y2={currentLine.y2}
+  />
+
+  <Line
+    x1={currentLine.x2}
+    y1={currentLine.y2}
+    x2={currentLine.x3}
+    y2={currentLine.y3}
+  />
+  { hull.map((p, index) => {
               return (
                 <Line
                   x1={p.x}
                   y1={p.y}
-                  x2={hull[(index + 1)%hull.length]?.x}
-                  y2={hull[(index + 1)%hull.length]?.y}
+                  x2={hull[index + 1]?.x}
+                  y2={hull[index + 1]?.y}
                 />
               );
             })}
-      
-          {pointsArray.map((point, index) => (
-            <Point key={index} x={point.x} y={point.y} />
-          ))}
-        </div>
+   </>
+
+)}
+    { hull.length>1 && hull.map((p, index) => {
+              return (
+                <Line
+                  x1={p.x}
+                  y1={p.y}
+                  x2={hull[isComplete?(index + 1)%hull.length:index+1]?.x}
+                  y2={hull[isComplete?(index + 1)%hull.length:index+1]?.y}
+                />
+              );
+            })}
     
+ 
+{pointsArray.map((point, index) => (
+             <Point   key={index} x={point.x} y={point.y} />
+             
+                     ))}
+
+</div>   
       )
 }

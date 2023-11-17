@@ -1,8 +1,14 @@
 "use client";
+import HighlightPointP from "../components/HighlightPointP";
+import HighlightPoint from "../components/HighlightPointP";
+import HighlightPointQ from "../components/HighlightPointQ";
 import Line from "../components/Line";
 import Point from "../components/Point";
 import { useEffect, useState } from "react";
 const JarvisMarch=()=>{
+  const [isComplete,setIsComplete]=useState(false);
+  const [pointP,setPointP]=useState<{x:number,y:number}>();
+  const [pointQ,setPointQ]=useState<{x:number,y:number}>();
 const [isRunning,setIsRunning]=useState(false);
     const [hull, setHull] = useState([
         {
@@ -61,6 +67,10 @@ const [isRunning,setIsRunning]=useState(false);
             x: 290,
             y: 40
           },
+          {
+          x: 390,
+          y: 340
+        },
       ];
       function orientation(p:{x:number,y:number}, q:{x:number,y:number}, r:{x:number,y:number}) 
       { 
@@ -96,6 +106,7 @@ useEffect( ()=>{
               
                 // Add current point to result 
                 hull.push(points[p]); 
+   setPointP(points[p]);
                 setHull(hull);
                 // Search for a point 'q' such that  
                 // orientation(p, q, x) is counterclockwise  
@@ -104,7 +115,7 @@ useEffect( ()=>{
                 // wise point in q. If any point 'i' is more  
                 // counterclock-wise than q, then update q. 
                 q = (p + 1) % n; 
-                    
+                setPointQ(points[q]);
                 for (let i = 0; i < n; i++) 
                 { 
                    // If i is more counterclockwise than  
@@ -112,26 +123,31 @@ useEffect( ()=>{
                    setCurrentLine({
                     x1: points[p].x,
                     y1: points[p].y,
-                    x2: points[i].x,
-                    y2: points[i].y,
-                    x3: points[q].x,
-                    y3: points[q].y
+                    x2: points[q].x,
+                    y2: points[q].y,
+                    x3: points[i].x,
+                    y3: points[i].y,
                   });
+   
+
                   await new Promise((resolve) => setTimeout(resolve, 1000));
-                   if (orientation(points[p], points[i], points[q])==2) 
-                       q = i; 
+                   if (orientation(points[p], points[q], points[i])==2) {
+                       q = i;
+                      setPointQ(points[q]);
+                      }
                 } 
              
                 // Now q is the most counterclockwise with 
                 // respect to p. Set p as q for next iteration,  
                 // so that q is added to result 'hull' 
                 p = q; 
-             
+                await new Promise((resolve) => setTimeout(resolve, 1000));
             } while (p != l);  // While we don't come to first  
-                               // point 
+  setIsRunning(false);
+  setIsComplete(true);
+  // point 
              
   console.log("Convex Hull",hull);
-  setIsRunning(false);
                 
               setHull(hull);
        }  
@@ -145,6 +161,15 @@ useEffect( ()=>{
  
 {isRunning && (
     <>
+    
+    <HighlightPointP
+    x={pointP?.x||0}
+    y={pointP?.y||0}
+    />
+    <HighlightPointQ
+    x={pointQ?.x||0}
+    y={pointQ?.y||0}
+    />
     <Line
     x1={currentLine.x1}
     y1={currentLine.y1}
@@ -158,23 +183,35 @@ useEffect( ()=>{
     x2={currentLine.x3}
     y2={currentLine.y3}
   />
-   </>
-
-)}
-           {hull.length > 2 &&
-            hull.map((p, index) => {
+  { hull.map((p, index) => {
               return (
                 <Line
                   x1={p.x}
                   y1={p.y}
-                  x2={hull[(index + 1)%hull.length]?.x}
-                  y2={hull[(index + 1)%hull.length]?.y}
+                  x2={hull[index + 1]?.x}
+                  y2={hull[index + 1]?.y}
                 />
               );
             })}
+   </>
+
+)}
+    { hull.length>1 && hull.map((p, index) => {
+              return (
+                <Line
+                  x1={p.x}
+                  y1={p.y}
+                  x2={hull[isComplete?(index + 1)%hull.length:index+1]?.x}
+                  y2={hull[isComplete?(index + 1)%hull.length:index+1]?.y}
+                />
+              );
+            })}
+    
+ 
 {pointsArray.map((point, index) => (
-            <Point key={index} x={point.x} y={point.y} />
-          ))}
+             <Point   key={index} x={point.x} y={point.y} />
+             
+                     ))}
 
 </div>
  );   
