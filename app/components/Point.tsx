@@ -34,7 +34,9 @@ const Point:React.FC<PointProps> =
         margin:"0"
       }}
     >
-       
+       <div>
+        {x+","+y}
+       </div>
     </animated.div>
     
   );

@@ -10,15 +10,8 @@ export default function BruteForce(){
   const [pointP,setPointP]=useState<{x:number,y:number}>();
   const [pointQ,setPointQ]=useState<{x:number,y:number}>();
 const [isRunning,setIsRunning]=useState(false);
-    const [hull, setHull] = useState([
-        {
-          x: 0,
-          y: 0
-        },
-        {
-          x: 0,
-          y: 0
-        }
+    const [hull, setHull] = useState<{x:number,y:number}[]>([
+         
       ]);
       const [currentLine, setCurrentLine] = useState({
         x1: 0,
@@ -65,8 +58,26 @@ const [isRunning,setIsRunning]=useState(false);
           x: 290,
           y: 140
         },
+        {
+            x: 390,
+            y: 240
+          },
+          {
+            x: 290,
+            y: 40
+          },
+          {
+          x: 390,
+          y: 340
+        },
       ];
-    
+    pointsArray.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
+      if (a.x !== b.x) {
+          return a.x - b.x;
+      } else {
+          return a.y - b.y;
+      }
+    })
       function orientation(p:{x:number,y:number}, q:{x:number,y:number}, r:{x:number,y:number}) {
         const val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
     
@@ -110,12 +121,24 @@ const [isRunning,setIsRunning]=useState(false);
                   if (!hull.includes(points[i])) {
                     hull.push(points[i]);
                      
-                    
+                    hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
+                      if (a.x !== b.x) {
+                          return a.x - b.x;
+                      } else {
+                          return a.y - b.y;
+                      }
+                    })
                      setHull(hull);
                   }
                   if (!hull.includes(points[j])) {
                     hull.push(points[j]);
-                    
+                    hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
+                      if (a.x !== b.x) {
+                          return a.x - b.x;
+                      } else {
+                          return a.y - b.y;
+                      }
+                    })
                                        setHull(hull);
                   }
                 }
@@ -124,69 +147,68 @@ const [isRunning,setIsRunning]=useState(false);
           }
          
            setIsRunning(false);
-           setIsComplete(true);                 
-
+           setIsComplete(true);     
+           console.log(hull);            
+hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
+  if (a.x !== b.x) {
+      return a.x - b.x;
+  } else {
+      return a.y - b.y;
+  }
+})
           setHull(hull);
         }
         bruteForceConvexHull(pointsArray);
       }, []);
     
       return (
-        <div className="App">
-         {isRunning && (
-    <>
-    
-    <HighlightPointP
-    x={pointP?.x||0}
-    y={pointP?.y||0}
-    />
-    <HighlightPointQ
-    x={pointQ?.x||0}
-    y={pointQ?.y||0}
-    />
-    <Line
-    x1={currentLine.x1}
-    y1={currentLine.y1}
-    x2={currentLine.x2}
-    y2={currentLine.y2}
-  />
-
-  <Line
-    x1={currentLine.x2}
-    y1={currentLine.y2}
-    x2={currentLine.x3}
-    y2={currentLine.y3}
-  />
-  { hull.map((p, index) => {
-              return (
-                <Line
-                  x1={p.x}
-                  y1={p.y}
-                  x2={hull[index + 1]?.x}
-                  y2={hull[index + 1]?.y}
-                />
-              );
-            })}
-   </>
-
-)}
-    { hull.length>1 && hull.map((p, index) => {
-              return (
-                <Line
-                  x1={p.x}
-                  y1={p.y}
-                  x2={hull[isComplete?(index + 1)%hull.length:index+1]?.x}
-                  y2={hull[isComplete?(index + 1)%hull.length:index+1]?.y}
-                />
-              );
-            })}
-    
+        <div>
  
-{pointsArray.map((point, index) => (
-             <Point   key={index} x={point.x} y={point.y} />
-             
-                     ))}
-
-</div>   
+        {isRunning && (
+            <>
+            
+            <HighlightPointP
+            x={pointP?.x||0}
+            y={pointP?.y||0}
+            />
+            <HighlightPointQ
+            x={pointQ?.x||0}
+            y={pointQ?.y||0}
+            />
+            <Line
+            x1={currentLine.x1}
+            y1={currentLine.y1}
+            x2={currentLine.x2}
+            y2={currentLine.y2}
+          />
+        
+          <Line
+            x1={currentLine.x2}
+            y1={currentLine.y2}
+            x2={currentLine.x3}
+            y2={currentLine.y3}
+          />
+          
+           </>
+        
+        )}
+            { hull.length>1 && hull.map((p, index) => {
+                      return (
+                        <Line
+                          x1={p.x}
+                          y1={p.y}
+                          x2={hull[isComplete?(index + 1)%hull.length:index+1]?.x}
+                          y2={hull[isComplete?(index + 1)%hull.length:index+1]?.y}
+                        />
+                      );
+                    })}
+            
+         
+        {pointsArray.map((point, index) => (
+                     <Point   key={index} x={point.x} y={point.y} />
+                     
+                             ))}
+        
+        </div>  
       )
 }

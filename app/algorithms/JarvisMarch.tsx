@@ -30,7 +30,7 @@ const [isRunning,setIsRunning]=useState(false);
       });
     
 
-    let pointsArray = [
+      let pointsArray = [
         {
           x: 90,
           y: 200
