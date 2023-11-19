@@ -5,6 +5,7 @@ import Point from "../components/Point";
 import Line from "../components/Line";
 import HighlightPointP from "../components/HighlightPointP";
 import HighlightPointQ from "../components/HighlightPointQ";
+import GrayLine from "../components/GrayLine";
 const CcWLineIntersection=()=>{
     const [isComplete,setIsComplete]=useState(false);
     const [isRunning,setIsRunning]=useState(false);
@@ -269,22 +270,22 @@ y={pointQ?.y}
 
 )}
 
-
-
-{isComplete && (
-    <>
-<Line
+<GrayLine
     x1={points[0].x}
     y1={points[0].y}
     x2={points[1].x}
     y2={points[1].y}
   />
-  <Line
+  <GrayLine
     x1={points[2].x}
     y1={points[2].y}
     x2={points[3].x}
     y2={points[3].y}
   />
+
+
+{isComplete && (
+    <>
  {intersection &&(
     <HighlightPointP
   x={intersection?.x}
