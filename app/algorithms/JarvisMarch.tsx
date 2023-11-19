@@ -183,16 +183,8 @@ useEffect( ()=>{
     x2={currentLine.x3}
     y2={currentLine.y3}
   />
-  { hull.map((p, index) => {
-              return (
-                <Line
-                  x1={p.x}
-                  y1={p.y}
-                  x2={hull[index + 1]?.x}
-                  y2={hull[index + 1]?.y}
-                />
-              );
-            })}
+ 
+   
    </>
 
 )}
