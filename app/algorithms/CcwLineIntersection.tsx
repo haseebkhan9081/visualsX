@@ -4,9 +4,11 @@ import Pointtype from "../types/Point";
 import Point from "../components/Point";
 import Line from "../components/Line";
 import HighlightPointP from "../components/HighlightPointP";
+import HighlightPointQ from "../components/HighlightPointQ";
 const CcWLineIntersection=()=>{
     const [isComplete,setIsComplete]=useState(false);
     const [isRunning,setIsRunning]=useState(false);
+    const [pointQ,setPointQ]=useState<{x:number,y:number}>({x:0,y:0});
     const [simpleLine,setSimpleLine]=useState<{
         x1:number,
         y1:number,
@@ -33,10 +35,17 @@ null
     }
     let intersectionPoint:Pointtype;
 
-
+    function onSegment(p: Pointtype, q: Pointtype, r: Pointtype):boolean {
+      return (
+          q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) &&
+          q.y <= Math.max(p.y, r.y) && q.y >= Math.min(p.y, r.y)
+      );
+  }
 useEffect(()=>{
  // Function to check if two line segments intersect
  async function doIntersect(p1: Pointtype, q1: Pointtype, p2: Pointtype, q2: Pointtype){
+  setIsRunning(true);
+  setIsComplete(false);
     // Find the 4 orientations needed for general and special cases
     const o1 = orientation(p1, q1, p2);
     setCurrentLine({
@@ -47,7 +56,9 @@ useEffect(()=>{
         x3:p2.x,
         y3:p2.y
     });
-    await new Promise((resolve)=>setTimeout(resolve,1000));
+    console.log("await new Promise((resolve) => setTimeout(resolve, 1000))");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("await new Promise((resolve) => setTimeout(resolve, 1000))");
     const o2 = orientation(p1, q1, q2);
     setCurrentLine({
         x1:p1.x,
@@ -57,7 +68,8 @@ useEffect(()=>{
         x3:q2.x,
         y3:q2.y
     });
-    await new Promise((resolve)=>setTimeout(resolve,1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("await new Promise((resolve) => setTimeout(resolve, 1000))");
     const o3 = orientation(p2, q2, p1);
     setCurrentLine({
         x1:p2.x,
@@ -67,7 +79,8 @@ useEffect(()=>{
         x3:p1.x,
         y3:p1.y
     });
-    await new Promise((resolve)=>setTimeout(resolve,1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("await new Promise((resolve) => setTimeout(resolve, 1000))");
     const o4 = orientation(p2, q2, q1);
     setCurrentLine({
         x1:p2.x,
@@ -77,8 +90,10 @@ useEffect(()=>{
         x3:q1.x,
         y3:q1.y
     });
-    await new Promise((resolve)=>setTimeout(resolve,1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("await new Promise((resolve) => setTimeout(resolve, 1000))");
     // General case
+    console.log(o1 !== o2 && o3 !== o4);
     if (o1 !== o2 && o3 !== o4) {
         const intersectionX =
         ((p1.x * q1.y - p1.y * q1.x) * (p2.x - q2.x) - (p1.x - q1.x) * (p2.x * q2.y - p2.y * q2.x)) /
@@ -91,7 +106,8 @@ useEffect(()=>{
      intersectionPoint = { x: intersectionX, y: intersectionY };
 setIntersection(intersectionPoint);
 setIsComplete(true);
-setIsRunning(false);      
+setIsRunning(false);  
+console.log("it was a GENERAL CASE");    
 return;
     }
 
@@ -104,11 +120,11 @@ return;
         x2:q2.x,
         y2:q2.y 
     });
-    setIntersection(p2);
+    setPointQ(p2);
 
     setCurrentLine(null);
-    await new Promise((resolve)=>setTimeout(resolve,1000));
-    if (o1 === 0 && await onSegment(p1, p2, q1)){ 
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (o1 === 0 &&  onSegment(p1, p2, q1)){ 
         setIntersection(p2);
         setIsComplete(true);
       setIsRunning(false); 
@@ -121,10 +137,11 @@ return;
             x2:q1.x,
             y2:q1.y 
         });
-        setIntersection(q2);
-        await new Promise((resolve)=>setTimeout(resolve,1000));
+         
+        setPointQ(q2);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
     // p1, q1, and q2 are collinear and q2 lies on segment p1q1
-    if (o2 === 0 && await onSegment(p1, q2, q1)){ setIntersection(q2); 
+    if (o2 === 0 &&  onSegment(p1, q2, q1)){ setIntersection(q2); 
         setIsComplete(true);
       setIsRunning(false); 
       return;}
@@ -135,10 +152,10 @@ return;
         x2:q2.x,
         y2:q2.y 
     });
-    setIntersection(p1);
-    await new Promise((resolve)=>setTimeout(resolve,1000));
+    setPointQ(p1);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     // p2, q2, and p1 are collinear and p1 lies on segment p2q2
-    if (o3 === 0 && await onSegment(p2, p1, q2)) {setIntersection(p1);
+    if (o3 === 0 &&  onSegment(p2, p1, q2)) {setIntersection(p1);
         setIsComplete(true);
       setIsRunning(false); 
     return;}
@@ -150,55 +167,54 @@ return;
         x2:q1.x,
         y2:q1.y 
     });
-    setIntersection(q1);
-    await new Promise((resolve)=>setTimeout(resolve,1000));
+    setPointQ(q1);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
    
     // p2, q2, and q1 are collinear and q1 lies on segment p2q2
-    if (o4 === 0 && await onSegment(p2, q1, q2)){ setIntersection(q1);
+    if (o4 === 0 &&  onSegment(p2, q1, q2)){ setIntersection(q1);
+      
         setIsComplete(true);
       setIsRunning(false); 
     return;};
 
-      // Doesn't fall in any of the above cases
+    setIsComplete(true);
+      setIsRunning(false);
+      console.log(intersection);
+      return;
+      
+    // Doesn't fall in any of the above cases
       
 }
 
-// Function to check if point q lies on segment p-r
-async function onSegment(p: Pointtype, q: Pointtype, r: Pointtype):Promise<boolean> {
-    return (
-        q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) &&
-        q.y <= Math.max(p.y, r.y) && q.y >= Math.min(p.y, r.y)
-    );
-}
+ 
+ 
 doIntersect(points[0], points[1], points[2], points[3]);
-if (intersection) {
-    console.log("Lines intersect! at point");
-} else {
-    console.log("Lines do not intersect.");
-}
-
+ if(!intersection){
+  console.log("do not intersect");
+ }else{
+  console.log("point of inttersection",intersection);
+ }
 },[])
 
     
     // Example usage
     const points:Pointtype[]=[
-        {
-            x: 90,
-            y: 200
-          },
-          {
-            x: 190,
-            y: 67
-          },
-          {
-            x: 190,
-            y: 67
-          },
-          {
-            x: 180,
-            y: 100
-          },
-          
+      {
+        x: 90,
+        y: 200
+      },
+      {
+        x: 190,
+        y: 67
+      },{
+        x: 290,
+        y: 40
+      },
+      {
+      x: 390,
+      y: 340
+    },
+         
     ]
     
     
@@ -240,6 +256,12 @@ x={intersection?.x}
 y={intersection?.y}
 />
 )}
+  (
+<HighlightPointQ
+x={pointQ.x}
+y={pointQ?.y}
+/>)
+
 </>
 
 )}
