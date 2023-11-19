@@ -195,6 +195,7 @@ hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
             { hull.length>1 && hull.map((p, index) => {
                       return (
                         <Line
+                        key={index}
                           x1={p.x}
                           y1={p.y}
                           x2={hull[isComplete?(index + 1)%hull.length:index+1]?.x}
