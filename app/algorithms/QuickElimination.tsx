@@ -6,8 +6,14 @@ import HighlightPointQ from "../components/HighlightPointQ";
 import Line from "../components/Line";
 import Point from "../components/Point";
 import { useEffect, useState } from "react";
+import PointType from "../types/Point";
 
-const QuickElimination=()=>{
+interface QuickEliminationProps{
+  array:PointType[]
+}
+const QuickElimination:React.FC<QuickEliminationProps>=({
+  array
+})=>{
 
     const [isComplete,setIsComplete]=useState(false);
     const [pointP,setPointP]=useState<{x:number,y:number}>();
@@ -33,48 +39,7 @@ const QuickElimination=()=>{
         });
 
         let vara=[];
-        let pointsArray = [
-            {
-              x: 90,
-              y: 200
-            },
-            {
-              x: 190,
-              y: 67
-            },
-            {
-              x: 100,
-              y: 80
-            },
-            {
-              x: 180,
-              y: 100
-            },
-            {
-              x: 160,
-              y: 110
-            },
-            {
-              x: 230,
-              y: 200
-            },
-            {
-              x: 290,
-              y: 140
-            },
-            {
-                x: 390,
-                y: 240
-              },
-              {
-                x: 290,
-                y: 40
-              },
-              {
-              x: 390,
-              y: 340
-            },
-          ];
+        let pointsArray =  array;
        
 // JavaScript program to implement Quick Hull algorithm
 // to find convex hull.
@@ -234,7 +199,7 @@ async function printHull(a:{x:number,y:number}[], n:number)
 
 let n = pointsArray.length;
 printHull(pointsArray, n);
-},[])
+},[pointsArray]);
 
 
 

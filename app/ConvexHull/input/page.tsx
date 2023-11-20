@@ -9,11 +9,15 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import JarvisMarch from '@/app/algorithms/JarvisMarch';
 import BruteForce from '@/app/algorithms/BruteForce';
+import GrahamScan from '@/app/algorithms/GrahamScan';
+import MonotoneChain from '@/app/algorithms/MonotoneChain';
+import QuickElimination from '@/app/algorithms/QuickElimination';
 
 function Input() {
     const router=useRouter();
     const [click,setClick]=useState(false);
-  let [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
+  const [isDone,setIsDone]=useState(false);
   const [coordinates,setCoordinates]=useState<PointType[]>([]);
  useEffect(()=>{
     if(coordinates?.length<4){
@@ -40,6 +44,7 @@ function Input() {
           note that the number of points must be gtreater than 3
         </Dialog.Description>
 <InputCanvas
+setIsDone={setIsDone}
 onChange={setCoordinates}
 data={coordinates!}
 setIsOpen={setIsOpen}
@@ -63,9 +68,15 @@ setIsOpen={setIsOpen}
        {/* <JarvisMarch
        array={coordinates}
        /> */}
-<BruteForce
+{/* <BruteForce
 array={coordinates}
-/>
+/> */}
+
+{isDone&&(
+ <QuickElimination
+ array={coordinates}
+ />
+)}
     </div>
 </div>
 

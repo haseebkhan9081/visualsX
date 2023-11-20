@@ -9,11 +9,13 @@ interface InputCanvasProps{
     onChange:( coordinates: PointType[])=>void;
     data:PointType[];
     setIsOpen:(x:boolean)=>void;
+    setIsDone:(x:boolean)=>void;
 }
 const InputCanvas:React.FC<InputCanvasProps>=({
 onChange,
 data,
-setIsOpen
+setIsOpen,
+setIsDone
 })=>{
     const [Error,setError]=useState(false);
     const [coordinates, setCoordinates] = useState<PointType[]>([]);
@@ -56,6 +58,7 @@ of Points must be greater than 3</p>
         setError(true);
     }else{
         onChange(coordinates!);
+        setIsDone(true);
     setIsOpen(false)}
     }}>Done</Button>
 <Button

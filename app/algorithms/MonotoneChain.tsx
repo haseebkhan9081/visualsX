@@ -5,8 +5,12 @@ import Line from "../components/Line";
 import Point from "../components/Point";
 import PointType from "../types/Point";
 import { useState,useEffect, useMemo } from "react";
-
-const MonotoneChain=()=>{
+interface MonotoneChainProps{
+    array:PointType[];
+}
+const MonotoneChain:React.FC<MonotoneChainProps>=({
+    array
+})=>{
     const [isComplete,setIsComplete]=useState(false);
     const [pointP,setPointP]=useState<PointType>();
     const [pointQ,setPointQ]=useState<PointType>();
@@ -20,20 +24,7 @@ const MonotoneChain=()=>{
         x3: number,
         y3: number }>( );
     
-        let pointsArray: PointType[]=useMemo(()=>
-        [
-            { x: 120, y: 350 },
-            { x: 250, y: 200 },
-            { x: 180, y: 270 },
-            { x: 320, y: 120 },
-            { x: 420, y: 400 },
-            { x: 150, y: 80 },
-            { x: 280, y: 320 },
-            { x: 390, y: 240 },
-            { x: 290, y: 40 },
-            { x: 480, y: 180 },
-            ]
-    ,[])
+        let pointsArray: PointType[]=useMemo(()=>array,[array])
         
         
     function crossProduct(O: PointType, A: PointType, B: PointType): number {

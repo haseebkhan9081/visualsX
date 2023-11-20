@@ -4,8 +4,16 @@ import HighlightPointP from "../components/HighlightPointP";
 import HighlightPointQ from "../components/HighlightPointQ";
 import Line from "../components/Line";
 import Point from "../components/Point";
+import PointType from "@/app/types/Point";
 import { useEffect, useState } from "react";
-const GrahamScan=()=>{
+interface GrahamScanProps{
+array:PointType[];
+
+}
+
+const GrahamScan:React.FC<GrahamScanProps>=({
+  array
+})=>{
 
     const [isComplete,setIsComplete]=useState(false);
     const [pointP,setPointP]=useState<{x:number,y:number}>();
@@ -31,49 +39,7 @@ const GrahamScan=()=>{
         });
       
   
-      let pointsArray = [
-          {
-            x: 90,
-            y: 200
-          },
-          {
-            x: 190,
-            y: 67
-          },
-          {
-            x: 100,
-            y: 80
-          },
-          {
-            x: 180,
-            y: 100
-          },
-          {
-            x: 160,
-            y: 110
-          },
-          {
-            x: 230,
-            y: 200
-          },
-          {
-            x: 290,
-            y: 140
-          },
-          {
-              x: 390,
-              y: 240
-            },
-            {
-              x: 290,
-              y: 40
-            },
-            {
-            x: 390,
-            y: 340
-          },
-        ];
-   
+      let pointsArray = array;
         function nextToTop(S:{x:number,y:number}[]) {
           const p:{x:number,y:number}= S.pop()!;
           const res = S[S.length - 1];
@@ -232,7 +198,7 @@ useEffect(()=>{
     }
     let n = pointsArray.length;
 convexHull(pointsArray);
-},[])
+},[pointsArray]);
 
 
 useEffect(() => {
