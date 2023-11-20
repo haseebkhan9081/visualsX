@@ -7,11 +7,16 @@ import HighlightPointQ from "../components/HighlightPointQ";
 import PointType from "@/app/types/Point";
 interface BruteForceProps{
   array:PointType[];
+  setCode:(x:string)=>void;
+  setLines:(x:number[])=>void;
   }
 
  const BruteForce:React.FC<BruteForceProps>=(
 {
-  array
+  array,
+  setCode,
+  setLines
+
 }
  )=>{
 
@@ -30,7 +35,25 @@ const [isRunning,setIsRunning]=useState(false);
         x3: 0,
         y3: 0
       });
-    
+    const code=`for (let i = 0; i < n; i++) {
+for (let j = 0; j < n; j++) {
+if (i !== j) {
+let valid = true;
+if (k !== i && k !== j) {
+const orient = 
+orientation(points[i], 
+points[j], points[k]);
+if (orient <= 0  ) {
+valid = false;
+break;
+  }} 
+if(valid) {
+if(!hull.includes(points[i])) {
+hull.push(points[i]);}
+if (!hull.includes(points[j])) {
+hull.push(points[j]);}} }}}
+    `
+    setCode(code);
       const generatePoints = () => {
         const points = [];
         for (let i = 0; i < 3; i++) {
@@ -62,14 +85,27 @@ const [isRunning,setIsRunning]=useState(false);
           let hull: any = [];
     
           for (let i = 0; i < n; i++) {
+            setLines([1]);
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            
             setPointP(points[i]);
             for (let j = 0; j < n; j++) {
+              setLines([3]);
+              await new Promise((resolve) => setTimeout(resolve, 500));
+              
               setPointQ(points[j]);
               if (i !== j) {
+                setLines([4]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                
                 let valid = true;
                 for (let k = 0; k < n; k++) {
+                  setLines([5]);
+                  await new Promise((resolve) => setTimeout(resolve, 500));  
                   if (k !== i && k !== j) {
                     const orient = orientation(points[i], points[j], points[k]);
+                    setLines([6,7,8]);
+                    await new Promise((resolve) => setTimeout(resolve, 500));
                     setCurrentLine({
                       x1: points[i].x,
                       y1: points[i].y,
@@ -79,16 +115,28 @@ const [isRunning,setIsRunning]=useState(false);
                       y3: points[k].y
                     });
                     await new Promise((resolve) => setTimeout(resolve, 1000));
+                    setLines([9]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
                     if (orient <= 0  ) {
+                      setLines([10]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                
                       valid = false;
                       break;
                     }
                   }
                 }
+                setLines([13]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
                 if (valid) {
+                  setLines([14]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                
                   if (!hull.includes(points[i])) {
                     hull.push(points[i]);
-                     
+                    setLines([15]);
+                    await new Promise((resolve) => setTimeout(resolve, 500));
+                    
                     hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
                       if (a.x !== b.x) {
                           return a.x - b.x;
@@ -98,7 +146,13 @@ const [isRunning,setIsRunning]=useState(false);
                     })
                      setHull(hull);
                   }
+                  setLines([16]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                
                   if (!hull.includes(points[j])) {
+                    setLines([17]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                
                     hull.push(points[j]);
                     hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
                       if (a.x !== b.x) {

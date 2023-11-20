@@ -12,8 +12,11 @@ import BruteForce from '@/app/algorithms/BruteForce';
 import GrahamScan from '@/app/algorithms/GrahamScan';
 import MonotoneChain from '@/app/algorithms/MonotoneChain';
 import QuickElimination from '@/app/algorithms/QuickElimination';
+import Code from '@/app/components/Code';
 
 function Input() {
+  const [CodeText,setCodeText]=useState("");
+  const [lines,setLines]=useState([]);
     const router=useRouter();
     const [click,setClick]=useState(false);
   const [isOpen, setIsOpen] = useState(true);
@@ -65,7 +68,7 @@ setIsOpen={setIsOpen}
     </Dialog>
 
 <div className='w-full flex flex-col space-y-2'>
-<div className="flex mb-14 justify-between">
+<div className="flex   justify-between">
     <Link
     onClick={()=>setClick(true)}
     className="flex flex-row gap-x-3"
@@ -73,13 +76,15 @@ setIsOpen={setIsOpen}
     >{click?<Loader2 className="animate-spin"/>:<><ChevronLeft/> Home</>}</Link>
     
     </div>
-    <div className='flex items-center w-full bt-2 flex-row gap-x-3'>
+    <div className='flex items-center w-full   flex-row gap-x-3'>
       
 
 {isDone&&(
   <>
   {brute&&(
     <BruteForce
+    setLines={setLines}
+    setCode={setCodeText}
     array={coordinates}/>
   )} 
 
@@ -115,7 +120,7 @@ setIsOpen={setIsOpen}
   >Edit Points</Button>
 </div>
 </div>
-<div className='w-full mt-10 p-6 flex flex-row justify-between items-center'>
+<div className='w-full     flex flex-row justify-between items-center'>
 <div className='flex flex-col space-y-2 items-center'>
   <div onClick={
 ()=>{
@@ -177,8 +182,11 @@ setIsOpen={setIsOpen}
   </div>
   
 </div>
-<div className='border-2   bg-slate-200/50 border-red-300 rounded-md'>
-  {text}
+<div className='border-2    bg-transparent border-red-300 rounded-md'>
+ <Code
+ code={CodeText}
+ highlightedLines={lines}
+ />
 </div>
 </div>
 
