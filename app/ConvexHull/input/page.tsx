@@ -19,6 +19,15 @@ function Input() {
   const [isOpen, setIsOpen] = useState(true);
   const [isDone,setIsDone]=useState(false);
   const [coordinates,setCoordinates]=useState<PointType[]>([]);
+  const [brute,setBrute]=useState(false);
+  const [jarvis,setJarvis]=useState(false);
+  const [graham,setGraham]=useState(false);
+  const [quick,setQuick]=useState(false);
+  const [andrew,setAndrew]=useState(false);
+
+const [text,setText]=useState(`while(i>n){
+}`);
+  
  useEffect(()=>{
     if(coordinates?.length<4){
         setIsOpen(true)
@@ -56,7 +65,7 @@ setIsOpen={setIsOpen}
     </Dialog>
 
 <div className='w-full flex flex-col space-y-2'>
-<div className="flex justify-between">
+<div className="flex mb-14 justify-between">
     <Link
     onClick={()=>setClick(true)}
     className="flex flex-row gap-x-3"
@@ -65,21 +74,113 @@ setIsOpen={setIsOpen}
     
     </div>
     <div className='flex items-center w-full bt-2 flex-row gap-x-3'>
-       {/* <JarvisMarch
-       array={coordinates}
-       /> */}
-{/* <BruteForce
-array={coordinates}
-/> */}
+      
 
 {isDone&&(
- <QuickElimination
- array={coordinates}
- />
+  <>
+  {brute&&(
+    <BruteForce
+    array={coordinates}/>
+  )} 
+
+{jarvis&&(
+    <JarvisMarch
+    array={coordinates}/>
+  )}
+  
+  {graham&&(
+    <GrahamScan
+    array={coordinates}/>
+  )}
+  
+  {quick&&(
+    <QuickElimination
+    array={coordinates}/>
+  )}
+  
+  {andrew&&(
+    <MonotoneChain
+    array={coordinates}/>
+  )}
+</>
 )}
+
     </div>
 </div>
+<div className=' flex justify-between items-center'>
+<div>
+  <Button onClick={
+    ()=>{setIsOpen(true);
+  }}
+  >Edit Points</Button>
+</div>
+</div>
+<div className='w-full mt-10 p-6 flex flex-row justify-between items-center'>
+<div className='flex flex-col space-y-2 items-center'>
+  <div onClick={
+()=>{
+ setAndrew(false);
+ setGraham(false);
+ setJarvis(false);
+ setQuick(false);
+ setBrute(true); 
+}
 
+  } className='border-2 px-12 cursor-pointer border-slate-800 rounded-md hover:shadow-lg cursor-pointer hover:text-white hover:bg-slate-800'>
+    Brute Force
+  </div >
+  <div onClick={()=>{
+    
+ setAndrew(false);
+ setGraham(false);
+ setJarvis(true);
+ setQuick(false);
+ setBrute(false); 
+  }} className='border-2 bg-sky-200  px-12 border-sky-500 cursor-pointer rounded-md hover:shadow-lg hover:text-white hover:bg-slate-800'>
+    Jarvis March
+  </div>
+  <div
+   onClick={()=>{
+    
+    setAndrew(false);
+    setGraham(true);
+    setJarvis(false);
+    setQuick(false);
+    setBrute(false); 
+     }}
+  className='border-2 px-12 bg-red-200 cursor-pointer hover:shadow-lg hover:text-white hover:bg-slate-800 border-red-500 rounded-md'>
+    Graham Scan
+  </div>
+  <div 
+   onClick={()=>{
+    
+    setAndrew(false);
+    setGraham(false);
+    setJarvis(false);
+    setQuick(true);
+    setBrute(false); 
+     }}
+  className='border-2 cursor-pointer px-16 bg-green-200 hover:shadow-lg hover:text-white hover:bg-slate-800   border-green-500 rounded-md'>
+    Quick Hull
+  </div>
+  <div 
+   onClick={()=>{
+    
+    setAndrew(true);
+    setGraham(false);
+    setJarvis(false);
+    setQuick(false);
+    setBrute(false); 
+     }}
+  className='border-2 cursor-pointer bg-yellow-200 px-12 border-yellow-500 rounded-md hover:shadow-lg hover:text-white hover:bg-slate-800'>
+    Andrew Chains
+  </div>
+  
+</div>
+<div className='border-2   bg-slate-200/50 border-red-300 rounded-md'>
+  {text}
+</div>
+</div>
 
     </div>
   )
