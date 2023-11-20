@@ -17,7 +17,7 @@ const Line:React.FC<LineProps> = ({ x1, y1, x2, y2 }) => {
   });
 console.log(`line between (${x1},${y1}) (${x2},${y2})`);
   return (
-    <svg style={{ position: 'absolute',top:"5px",left:"5px",zIndex:1 }} width="450" height="450">
+    <svg style={{ position: 'absolute',top:"5px",left:"5px",zIndex:-1 }} width="1000" height="700">
     <animated.line
       x1={styles.x1}
       y1={styles.y1}

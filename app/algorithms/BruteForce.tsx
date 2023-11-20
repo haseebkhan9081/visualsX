@@ -4,7 +4,16 @@ import Point from "../components/Point";
 import Line from "../components/Line";
 import HighlightPointP from "../components/HighlightPointP";
 import HighlightPointQ from "../components/HighlightPointQ";
-export default function BruteForce(){
+import PointType from "@/app/types/Point";
+interface BruteForceProps{
+  array:PointType[];
+  }
+
+ const BruteForce:React.FC<BruteForceProps>=(
+{
+  array
+}
+ )=>{
 
   const [isComplete,setIsComplete]=useState(false);
   const [pointP,setPointP]=useState<{x:number,y:number}>();
@@ -29,48 +38,7 @@ const [isRunning,setIsRunning]=useState(false);
         }
         return points;
       };
-      let pointsArray = [
-        {
-          x: 90,
-          y: 200
-        },
-        {
-          x: 190,
-          y: 67
-        },
-        {
-          x: 100,
-          y: 80
-        },
-        {
-          x: 180,
-          y: 100
-        },
-        {
-          x: 160,
-          y: 110
-        },
-        {
-          x: 230,
-          y: 200
-        },
-        {
-          x: 290,
-          y: 140
-        },
-        {
-            x: 390,
-            y: 240
-          },
-          {
-            x: 290,
-            y: 40
-          },
-          {
-          x: 390,
-          y: 340
-        },
-      ];
+      let pointsArray = array;
     pointsArray.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
       if (a.x !== b.x) {
           return a.x - b.x;
@@ -159,7 +127,7 @@ hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
           setHull(hull);
         }
         bruteForceConvexHull(pointsArray);
-      }, []);
+      }, [pointsArray]);
     
       return (
         <div>
@@ -213,3 +181,5 @@ hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
         </div>  
       )
 }
+
+export default BruteForce;

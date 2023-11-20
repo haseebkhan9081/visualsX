@@ -5,7 +5,15 @@ import HighlightPointQ from "../components/HighlightPointQ";
 import Line from "../components/Line";
 import Point from "../components/Point";
 import { useEffect, useState } from "react";
-const JarvisMarch=()=>{
+import PointType from "../types/Point";
+
+interface JarvisMarchProps{
+array:PointType[];
+}
+const JarvisMarch:React.FC<JarvisMarchProps>=(
+  {array}
+)=>{
+  let pointsArray=array;
   const [isComplete,setIsComplete]=useState(false);
   const [pointP,setPointP]=useState<{x:number,y:number}>();
   const [pointQ,setPointQ]=useState<{x:number,y:number}>();
@@ -28,50 +36,9 @@ const [isRunning,setIsRunning]=useState(false);
         x3: 0,
         y3: 0
       });
-    
+  
 
-      let pointsArray = [
-        {
-          x: 90,
-          y: 200
-        },
-        {
-          x: 190,
-          y: 67
-        },
-        {
-          x: 100,
-          y: 80
-        },
-        {
-          x: 180,
-          y: 100
-        },
-        {
-          x: 160,
-          y: 110
-        },
-        {
-          x: 230,
-          y: 200
-        },
-        {
-          x: 290,
-          y: 140
-        },
-        {
-            x: 390,
-            y: 240
-          },
-          {
-            x: 290,
-            y: 40
-          },
-          {
-          x: 390,
-          y: 340
-        },
-      ];
+        
       function orientation(p:{x:number,y:number}, q:{x:number,y:number}, r:{x:number,y:number}) 
       { 
           let val = (q.y - p.y) * (r.x - q.x) - 
@@ -82,7 +49,7 @@ const [isRunning,setIsRunning]=useState(false);
       }
 useEffect( ()=>{
     
-   async function convexHull(points:{x:number,y:number}[], n:number) 
+   async function convexHull(points:PointType[], n:number) 
     { setIsRunning(true);
         // There must be at least 3 points 
             if (n < 3) return; 
@@ -153,7 +120,7 @@ useEffect( ()=>{
        }  
        convexHull(pointsArray,pointsArray.length);
 
-},[])
+},[pointsArray]);
 
 
  return (
