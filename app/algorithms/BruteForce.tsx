@@ -114,9 +114,9 @@ hull.push(points[j]);}} }}}
                       x3: points[k].x,
                       y3: points[k].y
                     });
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
                     setLines([9]);
-                await new Promise((resolve) => setTimeout(resolve, 500));
+                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                   
                     if (orient <= 0  ) {
                       setLines([10]);
                 await new Promise((resolve) => setTimeout(resolve, 500));

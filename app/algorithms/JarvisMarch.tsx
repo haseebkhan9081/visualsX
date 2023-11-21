@@ -9,9 +9,13 @@ import PointType from "../types/Point";
 
 interface JarvisMarchProps{
 array:PointType[];
+setCode:(x:string)=>void;
+setLines:(x:number[])=>void;
 }
 const JarvisMarch:React.FC<JarvisMarchProps>=(
-  {array}
+  {array,
+    setCode,
+  setLines}
 )=>{
   let pointsArray=array;
   const [isComplete,setIsComplete]=useState(false);
@@ -37,7 +41,17 @@ const [isRunning,setIsRunning]=useState(false);
         y3: 0
       });
   
-
+setCode(`do{ 
+hull.push(points[p]); 
+q = (p + 1) % n; 
+for (let i = 0; i < n; i++) 
+{if(orientation(points[p], 
+points[q], points[i])==2) {
+q = i;
+}}
+p = q; 
+} while (p != l);
+Done🚀`);
         
       function orientation(p:{x:number,y:number}, q:{x:number,y:number}, r:{x:number,y:number}) 
       { 
@@ -68,10 +82,13 @@ useEffect( ()=>{
             // again. This loop runs O(h) times where h is 
             // number of points in result or output. 
             let p = l, q; 
+            
             do
             { 
               
-                // Add current point to result 
+                // Add current point to result
+                setLines([2]);
+                await new Promise((resolve) => setTimeout(resolve, 500)); 
                 hull.push(points[p]); 
    setPointP(points[p]);
                 setHull(hull);
@@ -80,9 +97,13 @@ useEffect( ()=>{
                 // for all points 'x'. The idea is to keep  
                 // track of last visited most counterclock- 
                 // wise point in q. If any point 'i' is more  
-                // counterclock-wise than q, then update q. 
+                // countercock-wise than q, then update q. 
+                setLines([3]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
                 q = (p + 1) % n; 
                 setPointQ(points[q]);
+                setLines([4]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
                 for (let i = 0; i < n; i++) 
                 { 
                    // If i is more counterclockwise than  
@@ -96,10 +117,12 @@ useEffect( ()=>{
                     y3: points[i].y,
                   });
    
-
+                  setLines([5,6]);                  
                   await new Promise((resolve) => setTimeout(resolve, 1000));
                    if (orientation(points[p], points[q], points[i])==2) {
-                       q = i;
+                    setLines([7]);
+                    await new Promise((resolve) => setTimeout(resolve, 500));       
+                    q = i;
                       setPointQ(points[q]);
                       }
                 } 
@@ -107,9 +130,17 @@ useEffect( ()=>{
                 // Now q is the most counterclockwise with 
                 // respect to p. Set p as q for next iteration,  
                 // so that q is added to result 'hull' 
+                
                 p = q; 
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-            } while (p != l);  // While we don't come to first  
+                setLines([9]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                
+                setLines([10]);
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                        } while (p != l);  // While we don't come to first  
+                        setLines([11]);
+                        await new Promise((resolve) => setTimeout(resolve, 500));
+                        
   setIsRunning(false);
   setIsComplete(true);
   // point 

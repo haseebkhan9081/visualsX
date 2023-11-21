@@ -15,7 +15,17 @@ import QuickElimination from '@/app/algorithms/QuickElimination';
 import Code from '@/app/components/Code';
 
 function Input() {
-  const [CodeText,setCodeText]=useState("");
+  const [CodeText,setCodeText]=useState(`
+//please select an algorithm
+//by clicking on the buttons
+//to the left side
+//Encountered an issue😒?
+//Report to aa9081haseeb@gmail.com
+//with details on the problem and
+//how to reproduce it. 
+//Your feedback is crucial
+//for improving our software.
+//© All rights reserved`);
   const [lines,setLines]=useState([]);
     const router=useRouter();
     const [click,setClick]=useState(false);
@@ -28,8 +38,7 @@ function Input() {
   const [quick,setQuick]=useState(false);
   const [andrew,setAndrew]=useState(false);
 
-const [text,setText]=useState(`while(i>n){
-}`);
+ 
   
  useEffect(()=>{
     if(coordinates?.length<4){
@@ -83,23 +92,33 @@ setIsOpen={setIsOpen}
   <>
   {brute&&(
     <BruteForce
-    setLines={setLines}
+    // @ts-ignore
+    setLines={setLines!}
     setCode={setCodeText}
     array={coordinates}/>
   )} 
 
 {jarvis&&(
     <JarvisMarch
+    setCode={setCodeText}
+    // @ts-ignore
+    setLines={setLines}
     array={coordinates}/>
   )}
   
   {graham&&(
     <GrahamScan
+    setCode={setCodeText}
+    // @ts-ignore
+    setLines={setLines}
     array={coordinates}/>
   )}
   
   {quick&&(
     <QuickElimination
+    setCode={setCodeText}
+    //@ts-ignore
+    setLines={setLines}
     array={coordinates}/>
   )}
   
@@ -120,7 +139,7 @@ setIsOpen={setIsOpen}
   >Edit Points</Button>
 </div>
 </div>
-<div className='w-full     flex flex-row justify-between items-center'>
+<div className='w-full mt-6    flex flex-row justify-between items-center'>
 <div className='flex flex-col space-y-2 items-center'>
   <div onClick={
 ()=>{

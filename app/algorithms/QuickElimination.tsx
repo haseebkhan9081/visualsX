@@ -9,10 +9,14 @@ import { useEffect, useState } from "react";
 import PointType from "../types/Point";
 
 interface QuickEliminationProps{
-  array:PointType[]
+  array:PointType[],
+setCode:(x:string)=>void;
+setLines:(x:number[])=>void;
 }
 const QuickElimination:React.FC<QuickEliminationProps>=({
-  array
+  array,
+  setCode,
+  setLines
 })=>{
 
     const [isComplete,setIsComplete]=useState(false);
@@ -70,7 +74,9 @@ function lineDist(p1:{x:number,y:number}, p2:{x:number,y:number}, p:{x:number,y:
 	return Math.abs ((p.y - p1.y) * (p2.x - p1.x) -
 			(p2.y - p1.y) * (p.x - p1.x));
 }
-
+setCode(`for (let i=0; i<n; i++)
+{temp = lineDist(p1, p2, a[i])
+`)
 useEffect(()=>{
 // End points of line L are p1 and p2. side can have value
 // 1 or -1 specifying each of the parts made by the line L
