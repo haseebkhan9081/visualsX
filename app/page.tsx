@@ -21,6 +21,7 @@ import AlgoCard from "./components/Card";
   title="Convex Hull"
   destination="ConvexHull"
   des="Explore different algorithms for finding Convex Hull"
+  
   src={"https://raw.githubusercontent.com/haseebkhan9081/visualsX/4599ed6a9d602cbeb6770b1a31e407975be0dca0/public/The-definition-of-convex-hull-In-the-figure-the-polygon-is-the-convex-hull-of-the-point.png"}
   />
   <AlgoCard
