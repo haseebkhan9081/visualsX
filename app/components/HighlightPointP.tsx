@@ -23,11 +23,11 @@ const HighlightPointP: React.FC<PointProps> = ({ x, y }) => {
       className="circle"
       style={{
         position: "absolute",
-        top: y-5,
-        left: x-4,
+        top: y-2,
+        left: x-2,
         opacity: styles.opacity,
-        width: "25px",
-        height: "25px",
+        width: "35px",
+        height: "35px",
         border: "2px solid red",
         borderRadius: "50%",
         boxSizing: "border-box", 

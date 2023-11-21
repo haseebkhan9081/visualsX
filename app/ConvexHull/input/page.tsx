@@ -19,6 +19,8 @@ function Input() {
 //please select an algorithm
 //by clicking on the buttons
 //to the left side
+//if lines overlaps over the
+//previous lines,Refresh
 //Encountered an issue😒?
 //Report to aa9081haseeb@gmail.com
 //with details on the problem and
@@ -124,6 +126,9 @@ setIsOpen={setIsOpen}
   
   {andrew&&(
     <MonotoneChain
+    setCode={setCodeText}
+    //@ts-ignore
+    setLines={setLines}
     array={coordinates}/>
   )}
 </>
@@ -143,10 +148,12 @@ setIsOpen={setIsOpen}
 <div className='flex flex-col space-y-2 items-center'>
   <div onClick={
 ()=>{
+  router.refresh();
  setAndrew(false);
  setGraham(false);
  setJarvis(false);
  setQuick(false);
+ router.refresh();
  setBrute(true); 
 }
 
@@ -154,12 +161,13 @@ setIsOpen={setIsOpen}
     Brute Force
   </div >
   <div onClick={()=>{
+    setQuick(false);
+    setBrute(false); 
     
- setAndrew(false);
- setGraham(false);
- setJarvis(true);
- setQuick(false);
- setBrute(false); 
+    setAndrew(false);
+    setGraham(false);
+    router.refresh();
+    setJarvis(true);
   }} className='border-2 bg-sky-200  px-12 border-sky-500 cursor-pointer rounded-md hover:shadow-lg hover:text-white hover:bg-slate-800'>
     Jarvis March
   </div>
@@ -167,10 +175,11 @@ setIsOpen={setIsOpen}
    onClick={()=>{
     
     setAndrew(false);
-    setGraham(true);
     setJarvis(false);
     setQuick(false);
-    setBrute(false); 
+    setBrute(false);
+    router.refresh(); 
+    setGraham(true);
      }}
   className='border-2 px-12 bg-red-200 cursor-pointer hover:shadow-lg hover:text-white hover:bg-slate-800 border-red-500 rounded-md'>
     Graham Scan
@@ -181,8 +190,9 @@ setIsOpen={setIsOpen}
     setAndrew(false);
     setGraham(false);
     setJarvis(false);
+    setBrute(false);
+    router.refresh(); 
     setQuick(true);
-    setBrute(false); 
      }}
   className='border-2 cursor-pointer px-16 bg-green-200 hover:shadow-lg hover:text-white hover:bg-slate-800   border-green-500 rounded-md'>
     Quick Hull
@@ -190,11 +200,12 @@ setIsOpen={setIsOpen}
   <div 
    onClick={()=>{
     
-    setAndrew(true);
-    setGraham(false);
-    setJarvis(false);
-    setQuick(false);
-    setBrute(false); 
+     setGraham(false);
+     setJarvis(false);
+     setQuick(false);
+     setBrute(false);
+     router.refresh(); 
+     setAndrew(true);
      }}
   className='border-2 cursor-pointer bg-yellow-200 px-12 border-yellow-500 rounded-md hover:shadow-lg hover:text-white hover:bg-slate-800'>
     Andrew Chains

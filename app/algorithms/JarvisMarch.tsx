@@ -200,7 +200,7 @@ useEffect( ()=>{
     
  
 {pointsArray.map((point, index) => (
-             <Point   key={index} x={point.x} y={point.y} />
+             <Point number={index}  key={index} x={point.x} y={point.y} />
              
                      ))}
 

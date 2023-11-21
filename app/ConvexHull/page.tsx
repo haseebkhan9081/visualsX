@@ -11,7 +11,7 @@ const [click,setClick]=useState(false);
 
     return (
 
-<div className="p-6 w-full flex flex-col space-y-2 bg-slate-50">
+<div className="p-6 w-full flex h-screen flex-col space-y-2 bg-slate-50">
  <div className="flex justify-between">
     <Link
     onClick={()=>setClick(true)}

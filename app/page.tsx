@@ -3,13 +3,13 @@ import JarvisMarch from "./algorithms/JarvisMarch";
 import GrahamScan from "./algorithms/GrahamScan";
 import QuickElimination from "./algorithms/QuickElimination";
 import CcWLineIntersection from "./algorithms/CcwLineIntersection";
-import LineIntersectionAlgebra from "./algorithms/LineIntersectionAlgebra";
+import LineIntersectionAlgebra from "./algorithms/LineIntersectionDenominator";
 import MonotoneChain from "./algorithms/MonotoneChain";
 import AlgoCard from "./components/Card";
  export default function Home() {
   return (
     <div
-    className=" bg-slate-50 p-6 w-full flex flex-col gap-y-2">
+    className=" bg-slate-50 p-6 w-full h-screen flex flex-col gap-y-2">
  <div className="flex flex-col space-y-3 w-full items-center justify-center">
   <p className="text-slate-600">Welcome to </p>
   <h1 className="text-4xl font-bold">VisualsX🚀</h1>

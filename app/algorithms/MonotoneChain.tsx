@@ -7,9 +7,13 @@ import PointType from "../types/Point";
 import { useState,useEffect, useMemo } from "react";
 interface MonotoneChainProps{
     array:PointType[];
+    setCode:(x:string)=>void;
+setLines:(x:number[])=>void;
 }
 const MonotoneChain:React.FC<MonotoneChainProps>=({
-    array
+    array,
+    setCode,
+    setLines
 })=>{
     const [isComplete,setIsComplete]=useState(false);
     const [pointP,setPointP]=useState<PointType>();
@@ -30,7 +34,21 @@ const MonotoneChain:React.FC<MonotoneChainProps>=({
     function crossProduct(O: PointType, A: PointType, B: PointType): number {
         return (A.x - O.x) * (B.y - O.y) - (A.y - O.y) * (B.x - O.x);
     }
-
+setCode(`for(let i = 0;i< n;++i)
+{while(k>=2&&
+crossProduct(ans[k-2]
+,ans[k-1],A[i])
+<=0){
+k--;}
+ans[k++]=A[i - 1];}
+for(let i=n-1,t=k+1;i>0
+;--i)
+{while(k>=t && 
+crossProduct(ans[k-2],
+ans[k-1],A[i-1])<=0){
+ k--} 
+ans[k++] = A[i - 1];}
+Done🚀`)
  useEffect(()=>{
     async function convexHull(A: PointType[]){
         setIsRunning(true);
@@ -47,33 +65,38 @@ const MonotoneChain:React.FC<MonotoneChainProps>=({
         A.sort((a, b) => a.x - b.x || a.y - b.y);
     
         // Build lower hull
+
         for (let i = 0; i < n; ++i) {
             
-await new Promise((resolve)=>setTimeout(resolve,1000));
+            setLines([2,3,4,5]);
+            await new Promise((resolve) => setTimeout(resolve, 500)); 
             while (k >= 2 && crossProduct(ans[k - 2], ans[k - 1], A[i]) <= 0){
-               setCurrentLine({
-                x1:A[i].x,
-                y1:A[i].y,
-                x2:ans[k - 1].x,
-                y2:ans[k - 1].y,
-                x3:ans[k - 2].x,
-                y3:ans[k - 2].y
-               });
+                setCurrentLine({
+                    x1:A[i].x,
+                    y1:A[i].y,
+                    x2:ans[k - 1].x,
+                    y2:ans[k - 1].y,
+                    x3:ans[k - 2].x,
+                    y3:ans[k - 2].y
+                });
 
                setPointP(A[i]);
                setPointQ(ans[k - 1]);
-
+               setLines([6]);
 await new Promise((resolve)=>setTimeout(resolve,1000));
 
                 k--;}
+            setLines([7]);
             ans[k++] = A[i];
             setHull(ans);
+            await new Promise((resolve) => setTimeout(resolve, 500)); 
         }
     
         // Build upper hull
         for (let i = n - 1, t = k + 1; i > 0; --i) {
             
-await new Promise((resolve)=>setTimeout(resolve,1000));
+            setLines([10,11,12]);
+            await new Promise((resolve) => setTimeout(resolve, 500)); 
             while (k >= t && crossProduct(ans[k - 2], ans[k - 1], A[i - 1]) <= 0){
                 setCurrentLine({
                     x1:A[i - 1].x,
@@ -86,13 +109,16 @@ await new Promise((resolve)=>setTimeout(resolve,1000));
     
                    setPointP(A[i - 1]);
                    setPointQ(ans[k - 1]);
+                   setLines([13]);
     await new Promise((resolve)=>setTimeout(resolve,1000));
               
                 k--;
             
             }
+            setLines([14]);
             ans[k++] = A[i - 1];
             setHull(ans);
+            await new Promise((resolve) => setTimeout(resolve, 500)); 
         }
     
         // Resize the array to desired size
@@ -104,7 +130,8 @@ await new Promise((resolve)=>setTimeout(resolve,1000));
     setHull(ans);
     setIsComplete(true);
     setIsRunning(false);
-        return  ;
+    setLines([15]);
+            return  ;
     }
 
 
@@ -186,7 +213,7 @@ return (
      
   
  {pointsArray.map((point, index) => (
-              <Point   key={index} x={point.x} y={point.y} />
+              <Point number={index}   key={index} x={point.x} y={point.y} />
               
                       ))}
  

@@ -142,6 +142,7 @@ useEffect(()=>{
         // direction) than p1
         p0 = points[0];
         points.sort(compare);
+        
     
         // If two or more points make the same angle with p0,
         // Remove all but the one that is farthest from p0
@@ -308,7 +309,7 @@ return (
      
   
  {pointsArray.map((point, index) => (
-              <Point   key={index} x={point.x} y={point.y} />
+              <Point number={index}  key={index} x={point.x} y={point.y} />
               
                       ))}
  

@@ -1,5 +1,4 @@
 "use client";
- 
 import HighlightPointP from "../components/HighlightPointP";
 import HighlightPoint from "../components/HighlightPointP";
 import HighlightPointQ from "../components/HighlightPointQ";
@@ -7,6 +6,7 @@ import Line from "../components/Line";
 import Point from "../components/Point";
 import { useEffect, useState } from "react";
 import PointType from "../types/Point";
+import { useRouter } from "next/navigation";
 
 interface QuickEliminationProps{
   array:PointType[],
@@ -18,7 +18,7 @@ const QuickElimination:React.FC<QuickEliminationProps>=({
   setCode,
   setLines
 })=>{
-
+ 
     const [isComplete,setIsComplete]=useState(false);
     const [pointP,setPointP]=useState<{x:number,y:number}>();
     const [pointQ,setPointQ]=useState<{x:number,y:number}>();
@@ -74,9 +74,31 @@ function lineDist(p1:{x:number,y:number}, p2:{x:number,y:number}, p:{x:number,y:
 	return Math.abs ((p.y - p1.y) * (p2.x - p1.x) -
 			(p2.y - p1.y) * (p.x - p1.x));
 }
-setCode(`for (let i=0; i<n; i++)
-{temp = lineDist(p1, p2, a[i])
-`)
+setCode(`function quickHull()
+{for(let i=0;i<n;i++)
+{temp=lineDist(p1,p2
+,a[i])
+if((findSide(p1,p2,
+a[i])==side)&&(temp>
+max_dist)){
+ind=i;max_dist=temp;
+}}if (ind == -1){
+Qhull.add(p1);  
+Qhull.add(p2);
+return;}
+quickHull();
+quickHull();}
+printHull(){
+for(let i=1;i<n;i++)
+{if(a[i].x<a[min_x].x)
+{min_x = i; }
+if(a[i].x>a[max_x].x)
+{ max_x = i; }}
+quickHull(a,n,a[min_x]
+,a[max_x],1);
+quickHull(a,n,a[min_x]
+,a[max_x], -1);}
+Done🚀;`)
 useEffect(()=>{
 // End points of line L are p1 and p2. side can have value
 // 1 or -1 specifying each of the parts made by the line L
@@ -88,7 +110,10 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
 	// finding the point with maximum distance
 	// from L and also on the specified side of L.
 	for (let i=0; i<n; i++)
-	{
+	{setLines([2]);
+  await new Promise((resolve) => setTimeout(resolve, 500)); 
+  setLines([3,4]);
+  
 		let temp = lineDist(p1, p2, a[i]);
         setPointP(p1);
         setPointQ(p2);
@@ -100,9 +125,14 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
             x3:a[i].x,
             y3:a[i].y
         })
+        setLines([5,6,7]);
         await new Promise((resolve)=>setTimeout(resolve,1000));
-		if ((findSide(p1, p2, a[i]) == side) && (temp > max_dist))
+        
+         if ((findSide(p1, p2, a[i]) == side) && (temp > max_dist))
 		{
+      setLines([8]);
+      await new Promise((resolve) => setTimeout(resolve, 500)); 
+              
 			ind = i;
 			max_dist = temp;
 		}
@@ -110,8 +140,10 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
 
 	// If no point is found, add the end points
 	// of L to the convex hull.
-	if (ind == -1)
-	{
+	setLines([9]);
+   await new Promise((resolve) => setTimeout(resolve, 500)); 
+  if (ind == -1)
+	{setLines([10]);
 		Qhull.add(p1);
         vara=Array.from(Qhull);
         vara.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
@@ -123,7 +155,8 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
           })
         setHull(vara);
         await new Promise((resolve)=>setTimeout(resolve,1000));
-		Qhull.add(p2);
+        setLines([11]);
+        Qhull.add(p2);
         vara=Array.from(Qhull);
         vara.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
             if (a.x !== b.x) {
@@ -133,12 +166,17 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
             }
           })
         setHull(vara);
-        await new Promise((resolve)=>setTimeout(resolve,1000));
+        setLines([12]);
+    await new Promise((resolve)=>setTimeout(resolve,1000));
 		return;
 	}
 
 	// Recur for the two parts divided by a[ind]
+  setLines([13]);
+  await new Promise((resolve)=>setTimeout(resolve,500));
 await 	quickHull(a, n, a[ind], p1, -findSide(a[ind], p1, p2));
+setLines([14]);
+  await new Promise((resolve)=>setTimeout(resolve,500));
 await 	quickHull(a, n, a[ind], p2, -findSide(a[ind], p2, p1));
 }
 
@@ -158,18 +196,22 @@ async function printHull(a:{x:number,y:number}[], n:number)
     setPointP(a[min_x]);
     setPointQ(a[max_x]);
 	for (let i=1; i<n; i++)
-	{
+	{setLines([17]);
+    await new Promise((resolve)=>setTimeout(resolve,500));
 		if (a[i].x < a[min_x].x){
-			
+			setLines([18]);
             min_x = i;
             setPointP(a[min_x]);
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
         }
+        setLines([19]);
+    await new Promise((resolve)=>setTimeout(resolve,500));
 		if (a[i].x > a[max_x].x){
+      setLines([20]);
             max_x = i;
             setPointQ(a[max_x]);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 500));
 
         
         }
@@ -178,11 +220,15 @@ async function printHull(a:{x:number,y:number}[], n:number)
 	// Recursively find convex hull points on
 	// one side of line joining a[min_x] and
 	// a[max_x]
+  setLines([21,22]);
+    await new Promise((resolve)=>setTimeout(resolve,500));
 	await quickHull(a, n, a[min_x], a[max_x], 1);
 
 	// Recursively find convex hull points on
 	// other side of line joining a[min_x] and
 	// a[max_x]
+  setLines([23,24]);
+    await new Promise((resolve)=>setTimeout(resolve,500));
 	await quickHull(a, n, a[min_x], a[max_x], -1);
 
 	console.log("The points in Convex Hull are:");
@@ -196,6 +242,8 @@ async function printHull(a:{x:number,y:number}[], n:number)
       })
 	setHull(vara);
     await new Promise((resolve)=>setTimeout( resolve, 1000));
+    setLines([25]);
+    await new Promise((resolve)=>setTimeout(resolve,500));
  setIsRunning(false);
  setIsComplete(true);
 	Qhull.forEach((element:{x:number,y:number}) =>{
@@ -267,7 +315,7 @@ printHull(pointsArray, n);
      
   
  {pointsArray.map((point, index) => (
-              <Point   key={index} x={point.x} y={point.y} />
+              <Point  number={index} key={index} x={point.x} y={point.y} />
               
                       ))}
  
