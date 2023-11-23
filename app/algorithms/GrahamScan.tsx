@@ -17,7 +17,7 @@ const GrahamScan:React.FC<GrahamScanProps>=({
   setCode,
   setLines
 })=>{
-
+  const [exec,setExec]=useState<number>(0);
     const [isComplete,setIsComplete]=useState(false);
     const [pointP,setPointP]=useState<{x:number,y:number}>();
     const [pointQ,setPointQ]=useState<{x:number,y:number}>();
@@ -109,7 +109,8 @@ S[S.length - 1], points[i])
 !== 2)
 {S.pop();}
 S.push(points[i]);}
-Done🚀`);
+Done🚀
+Execution Time :${(exec/1000).toFixed(2)}s`);
  
 // 
 //   
@@ -121,6 +122,8 @@ useEffect(()=>{
     async function convexHull(points:{x:number,y:number}[]) {
         const n = points.length;
     setIsRunning(true);
+    const start=performance.now();
+    let offset=0;
         // Find the bottommost point
         let ymin = points[0].y,
             min = 0;
@@ -152,12 +155,14 @@ useEffect(()=>{
         let m = 1; // Initialize size of the modified array
         for (let i = 1; i < n; i++) {
           setLines([1]);
-          await new Promise((resolve) => setTimeout(resolve, 500));
+offset=offset+100;
+          await new Promise((resolve) => setTimeout(resolve, 100));
           
             // Keep removing i while the angle of i and i+1 is the same
             // with respect to p0
             setLines([2,3,4]);
-            await new Promise((resolve) => setTimeout(resolve, 500));
+            offset=offset+100;
+            await new Promise((resolve) => setTimeout(resolve, 100));
             while (
                 i < n - 1 &&
                 orientation(p0, points[i], points[i + 1]) === 0
@@ -173,14 +178,16 @@ useEffect(()=>{
    
                 } );
                 setLines([5]);
-                 
+                offset=offset+1000;
                 await new Promise((resolve) => setTimeout(resolve, 1000));
                 i++;
             }
             setLines([6]);
+            offset=offset+500;
             await new Promise((resolve) => setTimeout(resolve, 500));
             points[m] = points[i];
             setLines([7]);
+            offset=offset+500;
             await new Promise((resolve) => setTimeout(resolve, 500));
             m++; // Update the size of the modified array
         }
@@ -188,6 +195,7 @@ useEffect(()=>{
         // If the modified array of points has fewer than 3 points,
         // convex hull is not possible
         setLines([8]);
+        offset=offset+500;
         await new Promise((resolve) => setTimeout(resolve, 500));
         if (m < 3) return;
     
@@ -204,6 +212,7 @@ useEffect(()=>{
             // points next-to-top, top, and points[i] makes
             // a non-left turn
             setLines([10,11,12,13]);
+            offset=offset+500;
             await new Promise((resolve) => setTimeout(resolve, 500));
             
             while (S.length > 1 &&  orientation(nextToTop(S), S[S.length - 1], points[i]) !== 2
@@ -223,25 +232,31 @@ useEffect(()=>{
              
             );
             setLines([14]);
+            offset=offset+1000;
             await new Promise((resolve) => setTimeout(resolve, 1000));
                 S.pop();
                 setHull(S);
+                offset=offset+1000;
                 await new Promise((resolve) => setTimeout(resolve, 1000));
               }
               setLines([15]);  
             S.push(points[i]);
             setHull(S);
+            offset=offset+1000;
             await new Promise((resolve) => setTimeout(resolve, 1000));
             
              
         }
         setLines([16]);
+        offset=offset+500;
         await new Promise((resolve) => setTimeout(resolve, 500));
         // Now the stack has the output points, print the contents of the stack
        setHull(S);
        setIsRunning(false);
        setIsComplete(true);
-    }
+    const end=performance.now();
+    setExec(end-start-offset);
+      }
     let n = pointsArray.length;
 convexHull(pointsArray);
 },[pointsArray]);

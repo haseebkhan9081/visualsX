@@ -24,6 +24,7 @@ interface BruteForceProps{
   const [pointP,setPointP]=useState<{x:number,y:number}>();
   const [pointQ,setPointQ]=useState<{x:number,y:number}>();
 const [isRunning,setIsRunning]=useState(false);
+const [exec,setExec]=useState<number>(0);
     const [hull, setHull] = useState<{x:number,y:number}[]>([
          
       ]);
@@ -35,11 +36,11 @@ const [isRunning,setIsRunning]=useState(false);
         x3: 0,
         y3: 0
       });
-    const code=`for (let i = 0; i < n; i++) {
-for (let j = 0; j < n; j++) {
+    const code=`for(let i=0;i<n;i++)
+{for(let j=0;j<n;j++){
 if (i !== j) {
 let valid = true;
-if (k !== i && k !== j) {
+if(k!==i&&k!==j){
 const orient = 
 orientation(points[i], 
 points[j], points[k]);
@@ -52,6 +53,8 @@ if(!hull.includes(points[i])) {
 hull.push(points[i]);}
 if (!hull.includes(points[j])) {
 hull.push(points[j]);}} }}}
+Done🚀
+Execution time: ${(exec/1000).toFixed(2)}s
     `
     setCode(code);
       const generatePoints = () => {
@@ -62,22 +65,26 @@ hull.push(points[j]);}} }}}
         return points;
       };
       let pointsArray = array;
-    pointsArray.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
-      if (a.x !== b.x) {
-          return a.x - b.x;
-      } else {
-          return a.y - b.y;
-      }
-    })
+    // pointsArray.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
+    //   if (a.x !== b.x) {
+    //       return a.x - b.x;
+    //   } else {
+    //       return a.y - b.y;
+    //   }
+    // })
       function orientation(p:{x:number,y:number}, q:{x:number,y:number}, r:{x:number,y:number}) {
         const val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
     
         if (val === 0) return 0; // Collinear points
         return val  ; // Clockwise or counterclockwise
       }
-    
+      var whichSideOfLine = function(lineEndptA:PointType, lineEndptB:PointType, ptSubject:PointType) {
+        return (ptSubject.x - lineEndptA.x) * (lineEndptB.y - lineEndptA.y) - (ptSubject.y - lineEndptA.y) * (lineEndptB.x - lineEndptA.x);
+    };
       useEffect(() => {
         async function bruteForceConvexHull(points:{x:number,y:number}[]) {
+        const start=performance.now();
+        let offset=0;
           setIsRunning(true);
           const n = points.length;
           if (n < 3) return points; // Convex hull is not possible with less than 3 points
@@ -87,24 +94,29 @@ hull.push(points[j]);}} }}}
           for (let i = 0; i < n; i++) {
             setLines([1]);
             await new Promise((resolve) => setTimeout(resolve, 500));
-            
+            offset=offset+500;
             setPointP(points[i]);
             for (let j = 0; j < n; j++) {
-              setLines([3]);
+              setLines([3]);offset=offset+500;
               await new Promise((resolve) => setTimeout(resolve, 500));
               
               setPointQ(points[j]);
-              if (i !== j) {
-                setLines([4]);
+              if (i === j) {
+                continue;
+              }
+                setLines([4]);offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
-                
-                let valid = true;
+                var ptI = points[i];
+                var ptJ = points[j];
+                var allPointsOnTheRight = true;
                 for (let k = 0; k < n; k++) {
-                  setLines([5]);
+                  setLines([5]);offset=offset+500;
                   await new Promise((resolve) => setTimeout(resolve, 500));  
-                  if (k !== i && k !== j) {
-                    const orient = orientation(points[i], points[j], points[k]);
-                    setLines([6,7,8]);
+                  if(k === i || k === j) {
+                    continue;
+                }
+                    const orient = whichSideOfLine(ptI, ptJ, points[k]);
+                    setLines([6,7,8]);offset=offset+500;
                     await new Promise((resolve) => setTimeout(resolve, 500));
                     setCurrentLine({
                       x1: points[i].x,
@@ -114,72 +126,79 @@ hull.push(points[j]);}} }}}
                       x3: points[k].x,
                       y3: points[k].y
                     });
-                    setLines([9]);
+                    setLines([9]);offset=offset+1000;
                     await new Promise((resolve) => setTimeout(resolve, 1000));
                    
-                    if (orient <= 0  ) {
-                      setLines([10]);
+                    if (orient < 0  ) {
+                      setLines([10]);offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
                 
-                      valid = false;
+allPointsOnTheRight = false;
                       break;
                     }
                   }
-                }
-                setLines([13]);
+                
+                setLines([13]);offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
-                if (valid) {
-                  setLines([14]);
+                if (allPointsOnTheRight) {
+                  setLines([14]);offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
                 
                   if (!hull.includes(points[i])) {
                     hull.push(points[i]);
-                    setLines([15]);
+                    setLines([15]);offset=offset+500;
                     await new Promise((resolve) => setTimeout(resolve, 500));
                     
-                    hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
-                      if (a.x !== b.x) {
-                          return a.x - b.x;
-                      } else {
-                          return a.y - b.y;
-                      }
-                    })
+                    // hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
+                    //   if (a.x !== b.x) {
+                    //       return a.x - b.x;
+                    //   } else {
+                    //       return a.y - b.y;
+                    //   }
+                    // })
                      setHull(hull);
                   }
-                  setLines([16]);
+                  setLines([16]);offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
                 
                   if (!hull.includes(points[j])) {
-                    setLines([17]);
+                    setLines([17]);offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
                 
                     hull.push(points[j]);
-                    hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
-                      if (a.x !== b.x) {
-                          return a.x - b.x;
-                      } else {
-                          return a.y - b.y;
-                      }
-                    })
+                    // hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
+                    //   if (a.x !== b.x) {
+                    //       return a.x - b.x;
+                    //   } else {
+                    //       return a.y - b.y;
+                    //   }
+                    // });
                                        setHull(hull);
                   }
                 }
               }
             }
+
+            setIsRunning(false);
+            setIsComplete(true);     
+            console.log(hull);   
+            // hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
+            //   if (a.x !== b.x) {
+            //       return a.x - b.x;
+            //   } else {
+            //       return a.y - b.y;
+            //   }
+            // })
+            setHull(hull);
+          const end=performance.now();
+          setLines([18])
+          setExec(end-start-offset);
           }
          
-           setIsRunning(false);
-           setIsComplete(true);     
-           console.log(hull);            
-hull.sort((a:{x:number,y:number}, b:{x:number,y:number}) => {
-  if (a.x !== b.x) {
-      return a.x - b.x;
-  } else {
-      return a.y - b.y;
-  }
-})
-          setHull(hull);
-        }
+                  
+
+        
+        
         bruteForceConvexHull(pointsArray);
       }, [pointsArray]);
     

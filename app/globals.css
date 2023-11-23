@@ -74,6 +74,4 @@
     @apply bg-background text-foreground;
   }
 }
-.syntax-highlighter code {
-  color: #D73A49; /* Set text color to white */
-}
+ 

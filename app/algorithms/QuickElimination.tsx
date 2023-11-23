@@ -7,6 +7,7 @@ import Point from "../components/Point";
 import { useEffect, useState } from "react";
 import PointType from "../types/Point";
 import { useRouter } from "next/navigation";
+import { Star } from "lucide-react";
 
 interface QuickEliminationProps{
   array:PointType[],
@@ -44,6 +45,8 @@ const QuickElimination:React.FC<QuickEliminationProps>=({
 
         let vara=[];
         let pointsArray =  array;
+        
+        const [exec,setExec]=useState<number>(0);
        
 // JavaScript program to implement Quick Hull algorithm
 // to find convex hull.
@@ -98,12 +101,17 @@ quickHull(a,n,a[min_x]
 ,a[max_x],1);
 quickHull(a,n,a[min_x]
 ,a[max_x], -1);}
-Done🚀;`)
+Done🚀;
+Execution Time:${(exec/1000).toFixed(2)}s`)
 useEffect(()=>{
 // End points of line L are p1 and p2. side can have value
 // 1 or -1 specifying each of the parts made by the line L
+let offset=0;
+
+const start=performance.now();
 async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:number}, p2:{x:number,y:number}, side:number)
 {
+ 
 	let ind = -1;
 	let max_dist = 0;
 
@@ -111,6 +119,7 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
 	// from L and also on the specified side of L.
 	for (let i=0; i<n; i++)
 	{setLines([2]);
+    offset=offset+500;
   await new Promise((resolve) => setTimeout(resolve, 500)); 
   setLines([3,4]);
   
@@ -126,11 +135,15 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
             y3:a[i].y
         })
         setLines([5,6,7]);
+        
+    offset=offset+1000;
         await new Promise((resolve)=>setTimeout(resolve,1000));
         
          if ((findSide(p1, p2, a[i]) == side) && (temp > max_dist))
 		{
       setLines([8]);
+      
+    offset=offset+500;
       await new Promise((resolve) => setTimeout(resolve, 500)); 
               
 			ind = i;
@@ -141,6 +154,8 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
 	// If no point is found, add the end points
 	// of L to the convex hull.
 	setLines([9]);
+  
+  offset=offset+500;
    await new Promise((resolve) => setTimeout(resolve, 500)); 
   if (ind == -1)
 	{setLines([10]);
@@ -154,6 +169,8 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
             }
           })
         setHull(vara);
+        
+    offset=offset+1000;
         await new Promise((resolve)=>setTimeout(resolve,1000));
         setLines([11]);
         Qhull.add(p2);
@@ -167,15 +184,21 @@ async function quickHull(a:{x:number,y:number}[], n:number, p1:{x:number,y:numbe
           })
         setHull(vara);
         setLines([12]);
+        
+    offset=offset+1000;
     await new Promise((resolve)=>setTimeout(resolve,1000));
 		return;
 	}
 
 	// Recur for the two parts divided by a[ind]
   setLines([13]);
+  
+  offset=offset+500;
   await new Promise((resolve)=>setTimeout(resolve,500));
 await 	quickHull(a, n, a[ind], p1, -findSide(a[ind], p1, p2));
 setLines([14]);
+
+offset=offset+500;
   await new Promise((resolve)=>setTimeout(resolve,500));
 await 	quickHull(a, n, a[ind], p2, -findSide(a[ind], p2, p1));
 }
@@ -197,20 +220,28 @@ async function printHull(a:{x:number,y:number}[], n:number)
     setPointQ(a[max_x]);
 	for (let i=1; i<n; i++)
 	{setLines([17]);
+    
+    offset=offset+500;
     await new Promise((resolve)=>setTimeout(resolve,500));
 		if (a[i].x < a[min_x].x){
 			setLines([18]);
             min_x = i;
             setPointP(a[min_x]);
+            
+    offset=offset+1000;
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
         }
         setLines([19]);
+        
+    offset=offset+1000;
     await new Promise((resolve)=>setTimeout(resolve,500));
 		if (a[i].x > a[max_x].x){
       setLines([20]);
             max_x = i;
             setPointQ(a[max_x]);
+            
+    offset=offset+500;
             await new Promise((resolve) => setTimeout(resolve, 500));
 
         
@@ -221,6 +252,8 @@ async function printHull(a:{x:number,y:number}[], n:number)
 	// one side of line joining a[min_x] and
 	// a[max_x]
   setLines([21,22]);
+  
+  offset=offset+500;
     await new Promise((resolve)=>setTimeout(resolve,500));
 	await quickHull(a, n, a[min_x], a[max_x], 1);
 
@@ -228,6 +261,8 @@ async function printHull(a:{x:number,y:number}[], n:number)
 	// other side of line joining a[min_x] and
 	// a[max_x]
   setLines([23,24]);
+  
+  offset=offset+500;
     await new Promise((resolve)=>setTimeout(resolve,500));
 	await quickHull(a, n, a[min_x], a[max_x], -1);
 
@@ -241,14 +276,20 @@ async function printHull(a:{x:number,y:number}[], n:number)
         }
       })
 	setHull(vara);
+  
+  offset=offset+1000;
     await new Promise((resolve)=>setTimeout( resolve, 1000));
     setLines([25]);
+    
+    offset=offset+500;
     await new Promise((resolve)=>setTimeout(resolve,500));
  setIsRunning(false);
  setIsComplete(true);
 	Qhull.forEach((element:{x:number,y:number}) =>{
 		console.log("(", element.x, ", ", element.y, ") ");
 	})
+const end=performance.now();
+setExec(end-start-offset);
 }
 
 let n = pointsArray.length;

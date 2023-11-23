@@ -4,7 +4,7 @@ import { Dialog } from '@headlessui/react'
 import InputCanvas from '@/app/components/InputCanvas';
 import { Button } from '@/components/ui/button';
 import PointType from '@/app/types/Point';
-import { ChevronLeft, Loader2, Router } from 'lucide-react';
+import { ChevronLeft, Loader2, Router, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import JarvisMarch from '@/app/algorithms/JarvisMarch';
@@ -157,8 +157,8 @@ setIsOpen={setIsOpen}
  setBrute(true); 
 }
 
-  } className='border-2 px-12 cursor-pointer border-slate-800 rounded-md hover:shadow-lg cursor-pointer hover:text-white hover:bg-slate-800'>
-    Brute Force
+  } className='border-2 px-12 cursor-pointer border-slate-800 rounded-md hover:shadow-lg flex flex-row gap-x-2 items-center  hover:text-white hover:bg-slate-800'>
+    Brute Force {brute&&(<Zap  className='w-4 h-4'/>)}
   </div >
   <div onClick={()=>{
     setQuick(false);
@@ -168,8 +168,8 @@ setIsOpen={setIsOpen}
     setGraham(false);
     router.refresh();
     setJarvis(true);
-  }} className='border-2 bg-sky-200  px-12 border-sky-500 cursor-pointer rounded-md hover:shadow-lg hover:text-white hover:bg-slate-800'>
-    Jarvis March
+  }} className='border-2 bg-sky-200 flex flex-row gap-x-2 items-center  px-12 border-sky-500 cursor-pointer rounded-md hover:shadow-lg hover:text-white hover:bg-slate-800'>
+    Jarvis March {jarvis&&(<Zap  className='w-4 h-4'/>)}
   </div>
   <div
    onClick={()=>{
@@ -181,8 +181,8 @@ setIsOpen={setIsOpen}
     router.refresh(); 
     setGraham(true);
      }}
-  className='border-2 px-12 bg-red-200 cursor-pointer hover:shadow-lg hover:text-white hover:bg-slate-800 border-red-500 rounded-md'>
-    Graham Scan
+  className='border-2 px-12 bg-red-200 flex flex-row gap-x-2 items-center cursor-pointer hover:shadow-lg hover:text-white hover:bg-slate-800 border-red-500 rounded-md'>
+    Graham Scan {graham&&(<Zap  className='w-4 h-4'/>)}
   </div>
   <div 
    onClick={()=>{
@@ -194,8 +194,8 @@ setIsOpen={setIsOpen}
     router.refresh(); 
     setQuick(true);
      }}
-  className='border-2 cursor-pointer px-16 bg-green-200 hover:shadow-lg hover:text-white hover:bg-slate-800   border-green-500 rounded-md'>
-    Quick Hull
+  className='border-2 flex flex-row items-center gap-x-2 cursor-pointer px-16 bg-green-200 hover:shadow-lg hover:text-white hover:bg-slate-800   border-green-500 rounded-md'>
+    Quick Hull {quick&&(<Zap  className='w-4 h-4'/>)}
   </div>
   <div 
    onClick={()=>{
@@ -207,8 +207,8 @@ setIsOpen={setIsOpen}
      router.refresh(); 
      setAndrew(true);
      }}
-  className='border-2 cursor-pointer bg-yellow-200 px-12 border-yellow-500 rounded-md hover:shadow-lg hover:text-white hover:bg-slate-800'>
-    Andrew Chains
+  className='border-2 flex flex-row gap-x-2 items-center cursor-pointer bg-yellow-200 px-12 border-yellow-500 rounded-md hover:shadow-lg hover:text-white hover:bg-slate-800'>
+    Andrew Chains {andrew&&(<Zap  className='w-4 h-4'/>)}
   </div>
   
 </div>

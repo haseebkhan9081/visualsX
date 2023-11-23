@@ -27,7 +27,7 @@ const MonotoneChain:React.FC<MonotoneChainProps>=({
         y2: number,
         x3: number,
         y3: number }>( );
-    
+        const [exec,setExec]=useState<number>(0);
         let pointsArray: PointType[]=useMemo(()=>array,[array])
         
         
@@ -48,9 +48,12 @@ crossProduct(ans[k-2],
 ans[k-1],A[i-1])<=0){
  k--} 
 ans[k++] = A[i - 1];}
-Done🚀`)
+Done🚀
+ExeTime:${(exec/1000).toFixed(2)}s`)
  useEffect(()=>{
     async function convexHull(A: PointType[]){
+       const start=performance.now();
+       let offset=0;
         setIsRunning(true);
         setIsComplete(false);
         let n: number = A.length;
@@ -69,6 +72,7 @@ Done🚀`)
         for (let i = 0; i < n; ++i) {
             
             setLines([2,3,4,5]);
+            offset=offset+500;
             await new Promise((resolve) => setTimeout(resolve, 500)); 
             while (k >= 2 && crossProduct(ans[k - 2], ans[k - 1], A[i]) <= 0){
                 setCurrentLine({
@@ -83,12 +87,14 @@ Done🚀`)
                setPointP(A[i]);
                setPointQ(ans[k - 1]);
                setLines([6]);
+               offset=offset+1000;
 await new Promise((resolve)=>setTimeout(resolve,1000));
 
                 k--;}
             setLines([7]);
             ans[k++] = A[i];
             setHull(ans);
+            offset=offset+500;
             await new Promise((resolve) => setTimeout(resolve, 500)); 
         }
     
@@ -96,6 +102,7 @@ await new Promise((resolve)=>setTimeout(resolve,1000));
         for (let i = n - 1, t = k + 1; i > 0; --i) {
             
             setLines([10,11,12]);
+            offset=offset+500;
             await new Promise((resolve) => setTimeout(resolve, 500)); 
             while (k >= t && crossProduct(ans[k - 2], ans[k - 1], A[i - 1]) <= 0){
                 setCurrentLine({
@@ -110,6 +117,7 @@ await new Promise((resolve)=>setTimeout(resolve,1000));
                    setPointP(A[i - 1]);
                    setPointQ(ans[k - 1]);
                    setLines([13]);
+                   offset=offset+1000;
     await new Promise((resolve)=>setTimeout(resolve,1000));
               
                 k--;
@@ -118,19 +126,19 @@ await new Promise((resolve)=>setTimeout(resolve,1000));
             setLines([14]);
             ans[k++] = A[i - 1];
             setHull(ans);
+            offset=offset+500;
             await new Promise((resolve) => setTimeout(resolve, 500)); 
         }
     
         // Resize the array to desired size
         ans = ans.slice(0, k - 1);
     // Print the convex hull
-    console.log("the answer is: ");
-    for (let i = 0; i < ans.length; i++)
-        console.log("(" + ans[i].x + ", " + ans[i].y + ")");
     setHull(ans);
     setIsComplete(true);
     setIsRunning(false);
     setLines([15]);
+    const end=performance.now();
+    setExec(end-start-offset);
             return  ;
     }
 

@@ -17,6 +17,8 @@ const JarvisMarch:React.FC<JarvisMarchProps>=(
     setCode,
   setLines}
 )=>{
+  
+  const [exec,setExec]=useState<number>(0);
   let pointsArray=array;
   const [isComplete,setIsComplete]=useState(false);
   const [pointP,setPointP]=useState<{x:number,y:number}>();
@@ -51,7 +53,8 @@ q = i;
 }}
 p = q; 
 } while (p != l);
-Done🚀`);
+Done🚀
+Execution time:${(exec/1000).toFixed(2)}s`);
         
       function orientation(p:{x:number,y:number}, q:{x:number,y:number}, r:{x:number,y:number}) 
       { 
@@ -61,10 +64,13 @@ Done🚀`);
               if (val == 0) return 0;  // collinear 
               return (val > 0)? 1: 2; // clock or counterclock wise 
       }
+
 useEffect( ()=>{
     
    async function convexHull(points:PointType[], n:number) 
-    { setIsRunning(true);
+    { const start=performance.now();
+      let offset=0;
+      setIsRunning(true);
         // There must be at least 3 points 
             if (n < 3) return; 
              
@@ -88,6 +94,7 @@ useEffect( ()=>{
               
                 // Add current point to result
                 setLines([2]);
+                offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500)); 
                 hull.push(points[p]); 
    setPointP(points[p]);
@@ -99,10 +106,14 @@ useEffect( ()=>{
                 // wise point in q. If any point 'i' is more  
                 // countercock-wise than q, then update q. 
                 setLines([3]);
+                
+                offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
                 q = (p + 1) % n; 
                 setPointQ(points[q]);
                 setLines([4]);
+                
+                offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
                 for (let i = 0; i < n; i++) 
                 { 
@@ -117,10 +128,14 @@ useEffect( ()=>{
                     y3: points[i].y,
                   });
    
-                  setLines([5,6]);                  
+                  setLines([5,6]);
+                  
+                offset=offset+1000;                  
                   await new Promise((resolve) => setTimeout(resolve, 1000));
                    if (orientation(points[p], points[q], points[i])==2) {
                     setLines([7]);
+                    
+                offset=offset+500;
                     await new Promise((resolve) => setTimeout(resolve, 500));       
                     q = i;
                       setPointQ(points[q]);
@@ -133,12 +148,18 @@ useEffect( ()=>{
                 
                 p = q; 
                 setLines([9]);
+                
+                offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
                 
                 setLines([10]);
+                
+                offset=offset+500;
                 await new Promise((resolve) => setTimeout(resolve, 500));
                         } while (p != l);  // While we don't come to first  
                         setLines([11]);
+                        
+                offset=offset+500;
                         await new Promise((resolve) => setTimeout(resolve, 500));
                         
   setIsRunning(false);
@@ -146,7 +167,8 @@ useEffect( ()=>{
   // point 
              
   console.log("Convex Hull",hull);
-                
+                const end=performance.now();
+                setExec(end-start-offset);
               setHull(hull);
        }  
        convexHull(pointsArray,pointsArray.length);

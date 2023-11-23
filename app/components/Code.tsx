@@ -1,7 +1,7 @@
 import React, { useState } from "react";
  
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { dracula, docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { dracula,vs2015,dark ,a11yDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 interface CodeHighlightProps {
   code: string;
@@ -15,8 +15,8 @@ const CodeHighlight: React.FC<CodeHighlightProps> = ({ code, highlightedLines })
 
   return (
     <SyntaxHighlighter
-      language="json"
-      style={dracula}
+      language="javascript"
+      style={vs2015}
       wrapLines={true}
       showLineNumbers={true}
       lineProps={(lineNumber: number) => {
