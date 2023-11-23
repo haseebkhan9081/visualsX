@@ -96,8 +96,8 @@ Execution time: ${(exec/1000).toFixed(2)}s
             await new Promise((resolve) => setTimeout(resolve, 500));
             offset=offset+500;
             setPointP(points[i]);
-            for (let j = 0; j < n; j++) {
-              setLines([3]);offset=offset+500;
+            for (let j = i+1; j < n; j++) {
+              setLines([3]); ;offset=offset+500;
               await new Promise((resolve) => setTimeout(resolve, 500));
               
               setPointQ(points[j]);
